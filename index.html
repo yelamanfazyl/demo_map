@@ -1,0 +1,70 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.6.0/leaflet.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.6.0/leaflet.js"></script>
+    <script src="./SmoothWheelZoom.js"></script>
+    <title>smooth zoom demo</title>
+</head>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    #mapid {
+        width: 100vw;
+        height: 100vh;
+    }
+
+    #info_container{
+        position: absolute;
+        z-index: 999;
+        top: 0;
+        left: 50%;
+        margin-top: 8px;
+        padding: 8px;
+        transform: translateX(-50%);
+        width: 200px;
+        height: 64px;
+        background: rgba(0,0,0,0.8);
+        color: white;
+        text-align: center;
+    }
+
+    #info_container span{
+        font-size:24px;
+    }
+</style>
+<body>
+
+<div id="mapid"></div>
+<div id="info_container"></div>
+
+<script>
+    var mymap = L.map('mapid', {
+        scrollWheelZoom: false,
+        smoothWheelZoom: true,
+        smoothSensitivity: 1,
+
+    }).setView([51.1124095, 71.410068], 12);
+    mymap.scrollWheelZoom = true;
+    mymap.maxZoom = 18;
+    mymap.minZoom = 6;
+
+    L.tileLayer('https://tile{s}.maps.2gis.com/tiles?x={x}&y={y}&z={z}&v=1&ts=online_hd', {
+        attribution: '<a href="https://2gis.ru">2gis</a>',
+        subdomains: '01234',
+    }).addTo(mymap);
+
+    mymap.on("zoom", function () {
+        showZoom();
+    })
+
+    function showZoom(){
+        document.getElementById('info_container').innerHTML = "zoom<br/>" + "<span>" + mymap.getZoom().toFixed(2) + "</span>";
+    }
+    showZoom();
+</script>
+</body>
+</html>
